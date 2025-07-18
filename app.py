@@ -4,29 +4,15 @@ import numpy as np
 import joblib
 from sklearn.linear_model import LogisticRegression
 
+
 # Load the trained model
 # To keep it simple, we train the model again here (optional: later we can use joblib to save/load)
 
 @st.cache_data
 def load_model():
-    df = pd.read_csv("churn_data.csv")
-
-    #Preprocess
-    df.drop("customerID", axis=1, inplace=True)
-    df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors='coerce')
-    df.dropna(inplace=True)
-    binary_cols = ["Partner", "Dependents", "PhoneService", "PaperlessBilling", "Churn", "gender"]
-    for col in binary_cols:
-        df[col] = df[col].map({'Yes': 1, 'No': 0, 'Female': 0, 'Male': 1})
-    df = pd.get_dummies(df, drop_first=True)
-
-    X = df.drop("Churn", axis=1)
-    y = df["Churn"]
-
-    model = LogisticRegression(max_iter=1000)
-    model.fit(X, y)
-
-    return model, X.columns.tolist()
+    model = joblib.load("churn_model.pkl")
+    input_features = joblib.load("model_features.pkl")
+    return model, input_features
 
 model, input_features = load_model()
 

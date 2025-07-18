@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import joblib
 
 # load the dataset
 
@@ -49,7 +50,15 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
 # 10. Evaluate the model
-print("\nModel Evaluation:")
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
-print("\nClassification Report:\n", classification_report(y_test, y_pred))
+# print("\nModel Evaluation:")
+# print("Accuracy:", accuracy_score(y_test, y_pred))
+# print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
+# print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
+# Save the model (optional)
+joblib.dump(model, 'churn_model.pkl')
+
+#save column names used for traning
+joblib.dump(X.columns.tolist(), "model_features.pkl")
+
+print("\n✅ Model and features saved as 'churn_model.pkl' and 'model_features.pkl'")
